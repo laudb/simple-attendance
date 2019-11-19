@@ -4,6 +4,7 @@
     const logger     = require('morgan')
     const mongoose   = require('mongoose')
     const PORT       = 3001
+    const attendee   = require('./attendee')
 
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
