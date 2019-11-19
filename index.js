@@ -8,7 +8,7 @@
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    app.get('/', (req, res) => res.status(200).send({'message': 'Simple Attendance v1'}) )
+    app.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1'}) )
 
     app.post('/check-in', (req, res) => {
         // get user details
@@ -16,19 +16,17 @@
         let userEmail   = req.body.email;
         let checkInTime = req.body.checkIn;
         
-        console.log( req.body.fullName, req.body.email, req.body.checkIn)
         // check valid user input
         if (!fullName || !userEmail || !checkInTime ) {
-            res.status(400).send({'message': 'Input missing'})
+            res.status(400).send({'response': 'Input missing'});
         }
 
 
         // save information and return response
-        res.status(201).send({"message": `Welcome ${fullName}, you arrived at ${checkInTime}`})
-        
+        res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
     })
 
-    app.post('/check-out', (req, res, err, next) => {
+    app.post('/check-out', (req, res) => {
 
         // get user details
         let fullName     = req.body.fullName;
@@ -37,14 +35,13 @@
         
         // check valid user input
         if (!fullName || !userEmail || !checkOutTime ) {
-            res.status(400).send({'message': 'Input missing'})
+            res.status(400).send({'response': 'Input missing'});
         }
 
         // check for existing user, remove account and return response
-        res.status(200).send({"message": `Thank you ${fullName}, your check out time is ${checkOutTime}`})
-        next()
+        res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
     })
 
     app.listen( PORT, () => {
-        console.log(`Simple Attendance is live at ${PORT}`)
+        console.log(`Simple Attendance is live at ${PORT}`);
     })
