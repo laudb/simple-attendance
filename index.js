@@ -2,11 +2,23 @@
     const app        = express()
     const bodyParser = require('body-parser')
     const logger     = require('morgan')
+    const mongoose   = require('mongoose')
     const PORT       = 3001
 
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    const db = mongoose.connection;
+
+    db.once('open', () => {
+        console.log('Database Connected.')
+    })
+
+    db.once('error', () => {
+        console.log('Database Error.')
+    })
 
     app.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1'}) )
 
