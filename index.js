@@ -1,20 +1,22 @@
     const express    = require('express')
-    const bodyParser = require('body-parser')
     const app        = express()
+    const bodyParser = require('body-parser')
+    const logger     = require('morgan')
     const PORT       = 3001
 
+    app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
     app.get('/', (req, res) => res.status(200).send({'message': 'Simple Attendance v1'}) )
 
-    app.post('/check-in', (req, res, err, next) => {
-        
+    app.post('/check-in', (req, res) => {
         // get user details
         let fullName    = req.body.fullName;
         let userEmail   = req.body.email;
         let checkInTime = req.body.checkIn;
         
+        console.log( req.body.fullName, req.body.email, req.body.checkIn)
         // check valid user input
         if (!fullName || !userEmail || !checkInTime ) {
             res.status(400).send({'message': 'Input missing'})
@@ -23,7 +25,7 @@
 
         // save information and return response
         res.status(201).send({"message": `Welcome ${fullName}, you arrived at ${checkInTime}`})
-        next()
+        
     })
 
     app.post('/check-out', (req, res, err, next) => {
