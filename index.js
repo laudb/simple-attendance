@@ -4,7 +4,7 @@
     const logger     = require('morgan')
     const mongoose   = require('mongoose')
     const PORT       = 3001
-    const attendee   = require('./attendee')
+    const Attendee   = require('./attendee')
 
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,9 +34,17 @@
             res.status(400).send({'response': 'Input missing'});
         }
 
+        const attendee = new Attendee({
+            fullName, userEmail, checkInTime
+        });
+        attendee.save((err, data) {
+            if (err) { 
+                res.status(500).send({'response': ' Attendee not created'});
+            }
 
-        // save information and return response
-        res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
+            // save information and return response
+            res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
+        })
     })
 
     app.post('/check-out', (req, res) => {
@@ -51,8 +59,16 @@
             res.status(400).send({'response': 'Input missing'});
         }
 
-        // check for existing user, remove account and return response
-        res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+        Attendee.findOne({ userEmail}, (err, attendee ) {
+            if (err) {
+                res.status(500).send({'response': 'No attendee'});
+            }
+
+            attendee.delete()
+            // check for existing user, remove account and return response
+            res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+        })
+
     })
 
     app.listen( PORT, () => {
