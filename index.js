@@ -37,7 +37,8 @@
         const attendee = new Attendee({
             fullName, userEmail, checkInTime
         });
-        attendee.save((err, data) {
+
+        attendee.save((err, data) => {
             if (err) { 
                 res.status(500).send({'response': ' Attendee not created'});
             }
@@ -59,15 +60,15 @@
             res.status(400).send({'response': 'Input missing'});
         }
 
-        Attendee.findOne({ userEmail}, (err, attendee ) {
-            if (err) {
-                res.status(500).send({'response': 'No attendee'});
-            }
+        // Attendee.findOne({ userEmail}, (err, attendee ) {
+        //     if (err) {
+        //         res.status(500).send({'response': 'No attendee'});
+        //     }
 
-            attendee.delete()
-            // check for existing user, remove account and return response
-            res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
-        })
+        //     attendee.delete()
+        //     // check for existing user, remove account and return response
+        //     res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+        // })
 
     })
 
