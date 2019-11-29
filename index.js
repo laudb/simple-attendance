@@ -10,6 +10,7 @@
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
+
     mongoose.connect('mongodb://localhost:27017/attendeedb', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     const db = mongoose.connection;
 
@@ -20,6 +21,7 @@
     db.once('error', () => {
         console.log('Database Error.')
     })
+
 
     app.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1'}) )
 
@@ -37,11 +39,11 @@
         Attendee.findOne({ userEmail }, function (err, attendee) {
 
             if (err) {
-                res.status(400).send({'response': ' Model Error '})
+                res.status(500).send({'response': ' Save Error '})
             }
 
             if (attendee) {
-                res.status(500).send({'response': 'An attendee with that email already exists. '})
+                res.status(400).send({'response': 'An attendee with that email already exists. '})
             }
 
             else {
@@ -52,7 +54,7 @@
 
                 newAttendee.save( () => {
                     res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}` })
-                })
+                });
 
             }
 
@@ -72,26 +74,25 @@
             res.status(400).send({'response': 'Input missing'});
         }
 
-        // Attendee.findOne({ userEmail}, (err, attendee ) {
+        //  check for existing user, remove account and return response
+        Attendee.findOneAndDelete({ fullName, userEmail }, function(err, attendee ) {
 
-        //     if (err) {
-        //         res.status(400).send({'response': 'Model Error'});
-        //     }
+            if (err) {
+                res.status(500).send({'response': ' Delete Error'});
+            }
             
-        //     if (!attendee) {
-        //         res.status(500).send({'response': 'No attendee with that email exists'});
-        //     }
+            if (!attendee) {
+                res.status(400).send({'response': 'No attendee with that email exists'});
+            }
 
-        //     else {
-
-        //         attendee.delete()
-        //         // check for existing user, remove account and return response
-        //         res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
-        //     }
+            else {
+                res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+            }
             
-        // });
+        });
 
     });
+    
 
     app.listen( PORT, () => {
         console.log(`Simple Attendance is live at ${PORT}`);
