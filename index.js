@@ -10,7 +10,7 @@
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    mongoose.connect('mongodb://localhost:27017/attendeedb', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     const db = mongoose.connection;
 
     db.once('open', () => {
@@ -37,16 +37,18 @@
         const attendee = new Attendee({
             fullName, userEmail, checkInTime
         });
+            
+            attendee.save( (err) => {
+            
+                if (err) { 
+                    res.status(500).send({'response': ' Attendee not created'});
+                }
+            
+                // save information and return response
+                res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
+            });
 
-        attendee.save((err, data) => {
-            if (err) { 
-                res.status(500).send({'response': ' Attendee not created'});
-            }
-
-            // save information and return response
-            res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
-        })
-    })
+        });
 
     app.post('/check-out', (req, res) => {
 
