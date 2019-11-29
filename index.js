@@ -33,22 +33,32 @@
         if (!fullName || !userEmail || !checkInTime ) {
             res.status(400).send({'response': 'Input missing'});
         }
+        
+        Attendee.findOne({ userEmail }, function (err, attendee) {
 
-        const attendee = new Attendee({
-            fullName, userEmail, checkInTime
-        });
-            
-            attendee.save( (err) => {
-            
-                if (err) { 
-                    res.status(500).send({'response': ' Attendee not created'});
-                }
-            
-                // save information and return response
-                res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}`});        
-            });
+            if (err) {
+                res.status(400).send({'response': ' Model Error '})
+            }
+
+            if (attendee) {
+                res.status(500).send({'response': 'An attendee with that email already exists. '})
+            }
+
+            else {
+
+                const newAttendee = new Attendee({
+                    fullName, userEmail, checkInTime
+                });
+
+                newAttendee.save( () => {
+                    res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}` })
+                })
+
+            }
 
         });
+
+    });
 
     app.post('/check-out', (req, res) => {
 
@@ -63,16 +73,25 @@
         }
 
         // Attendee.findOne({ userEmail}, (err, attendee ) {
+
         //     if (err) {
-        //         res.status(500).send({'response': 'No attendee'});
+        //         res.status(400).send({'response': 'Model Error'});
+        //     }
+            
+        //     if (!attendee) {
+        //         res.status(500).send({'response': 'No attendee with that email exists'});
         //     }
 
-        //     attendee.delete()
-        //     // check for existing user, remove account and return response
-        //     res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
-        // })
+        //     else {
 
-    })
+        //         attendee.delete()
+        //         // check for existing user, remove account and return response
+        //         res.status(200).send({"response": `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+        //     }
+            
+        // });
+
+    });
 
     app.listen( PORT, () => {
         console.log(`Simple Attendance is live at ${PORT}`);
