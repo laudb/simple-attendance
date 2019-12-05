@@ -28,10 +28,10 @@
 
     app.post('/check-in', (req, res) => {
         // get user details
-        let fullName    = req.body.fullName;
-        let userEmail   = req.body.email;
-        let userLocation    = req.body.location;
-        let checkInTime = req.body.checkIn;
+        let fullName     = req.body.fullName;
+        let userEmail    = req.body.email;
+        let userLocation = req.body.location;
+        let checkInTime  = req.body.checkIn;
         
         // check valid user input
         if (!fullName || !userEmail || !checkInTime || !userLocation ) {
@@ -51,7 +51,7 @@
             else {
 
                 const newAttendee = new Attendee({
-                    fullName, userEmail, checkInTime
+                    fullName, userEmail, userLocation, checkInTime
                 });
 
                 newAttendee.save( () => {
@@ -99,4 +99,4 @@
     // app
     app.listen( PORT, () => {
         console.log(`Simple Attendance is live at ${PORT}`);
-    })
+    });
