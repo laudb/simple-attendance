@@ -6,11 +6,12 @@
     const PORT       = 3001
     const Attendee   = require('./attendee')
 
+    // deps. setup
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-
+    // db
     mongoose.connect('mongodb://localhost:27017/attendeedb', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     const db = mongoose.connection;
 
@@ -22,17 +23,18 @@
         console.log('Database Error.')
     })
 
-
+    // route
     app.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1'}) )
 
     app.post('/check-in', (req, res) => {
         // get user details
         let fullName    = req.body.fullName;
         let userEmail   = req.body.email;
+        let userLocation    = req.body.location;
         let checkInTime = req.body.checkIn;
         
         // check valid user input
-        if (!fullName || !userEmail || !checkInTime ) {
+        if (!fullName || !userEmail || !checkInTime || !userLocation ) {
             res.status(400).send({'response': 'Input missing'});
         }
         
@@ -67,10 +69,11 @@
         // get user details
         let fullName     = req.body.fullName;
         let userEmail    = req.body.email;
+        let userLocation = req.body.location;
         let checkOutTime = req.body.checkOut;
         
         // check valid user input
-        if (!fullName || !userEmail || !checkOutTime ) {
+        if (!fullName || !userEmail || !checkOutTime || !userLocation  ) {
             res.status(400).send({'response': 'Input missing'});
         }
 
@@ -93,7 +96,7 @@
 
     });
     
-
+    // app
     app.listen( PORT, () => {
         console.log(`Simple Attendance is live at ${PORT}`);
     })
