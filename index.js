@@ -3,10 +3,13 @@
     const mongoose   = require('mongoose')
     const bodyParser = require('body-parser')
     const logger     = require('morgan')
-    const PORT       = 3001
+    const dotenv     = require('dotenv')
+          dotenv.config()
+    const PORT       = process.env.PORT
+    const MONGOURL   = process.env.MONGOURL
     
     // db
-    mongoose.connect('mongodb://localhost:27017/attendeedb',
+    mongoose.connect( MONGOURL,
         {
             useNewUrlParser: true, 
             useUnifiedTopology: true, 
