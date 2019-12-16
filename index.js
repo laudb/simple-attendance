@@ -3,7 +3,6 @@
     const bodyParser = require('body-parser')
     const logger     = require('morgan')
     const dotenv     = require('dotenv').config()
-    const PORT       = process.env.PORT
 
     const db         = require('./db') 
     const routes     = require('./routes')
@@ -20,9 +19,5 @@
         return res.status(404).send({'response': 'Route Not Found.' })
     })
      
-    // app
-    app.listen( PORT, () => {
-        console.log(`Simple Attendance is live at ${PORT}`);
-    });
-    
 module.exports = app;
+
