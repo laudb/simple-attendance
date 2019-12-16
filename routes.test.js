@@ -14,5 +14,12 @@ describe('Endpoints', () => {
         expect(res.statusCode).toEqual(200)
         expect(res.body).toHaveProperty('response')
     })
+
+    it('should get main url error', async () => {
+        const res = await request(app)
+        .get('/y1/')
+        expect(res.statusCode).toEqual(404)
+        expect(res.body).toHaveProperty('Route Not Found.')
+    })
 })
 

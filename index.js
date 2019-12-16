@@ -15,6 +15,10 @@
     
     // config & routes
     app.use('/v1', routes);
+
+    app.use(function(req, res, next) {
+        return res.status(404).send({'response': 'Route Not Found.' })
+    })
      
     // app
     app.listen( PORT, () => {
