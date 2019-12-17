@@ -19,8 +19,10 @@ beforeAll(async (done) => {
 });
 
 afterAll(async () => {
+
     await server.close();
     await mongoose.disconnect();
+    
 });
 
 describe('Sample Test', () => {
