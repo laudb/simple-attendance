@@ -1,3 +1,4 @@
+const { attendeeValidationRules, validate } = require('../validator')
 const Attendee   = require('../models/attendee')
 const express    = require('express')
 const router     = express.Router()
@@ -9,11 +10,12 @@ const router     = express.Router()
         // get user details
         let fullName     = req.body.fullName;
         let userEmail    = req.body.email;
-        let userLocation = req.body.location;
+        let userLat      = req.body.lat;
+        let userLong     = req.body.long;
         let checkInTime  = req.body.checkIn;
         
         // check valid user input
-        if (!fullName || !userEmail || !checkInTime || !userLocation ) {
+        if (!fullName || !userEmail || !userLat || !userLong || !checkInTime ) {
             res.status(400).send({'response': 'Input missing '});
         }
        
@@ -30,7 +32,7 @@ const router     = express.Router()
             else {
 
                 const newAttendee = new Attendee({
-                    fullName, userEmail, userLocation, checkInTime
+                    fullName, userEmail, userLat, userLong, checkInTime
                 });
 
                 newAttendee.save( () => {
@@ -48,11 +50,12 @@ const router     = express.Router()
         // get user details
         let fullName     = req.body.fullName;
         let userEmail    = req.body.email;
-        let userLocation = req.body.location;
+        let userLat      = req.body.lat;
+        let userLong     = req.body.long;
         let checkOutTime = req.body.checkOut;
        
         // check valid user input
-        if ( !fullName || !userEmail || !checkOutTime || !userLocation  ) {
+        if (!fullName || !userEmail || !userLat || !userLong || !checkInTime ) {
             res.status(400).send({'response': 'Input missing'});
         }
 

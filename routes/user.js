@@ -1,6 +1,7 @@
-const User       = require('../models/user')
-const express    = require('express')
-const router     = express.Router()
+const { userValidationRules, validate } = require('../validator')
+const User                              = require('../models/user')
+const express                           = require('express')
+const router                            = express.Router()
 
 router.post('/', function (req, res) {
     let email    = req.body.email;
