@@ -1,4 +1,4 @@
-const Attendee   = require('./attendee')
+const Attendee   = require('../models/attendee')
 const express    = require('express')
 const router     = express.Router()
 
