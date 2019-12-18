@@ -3,7 +3,7 @@ const express    = require('express')
 const router     = express.Router()
 
    // route
-    router.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1'}) )
+    router.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1 '}) )
 
     router.post('/check-in', (req, res) => {
         // get user details
@@ -11,16 +11,16 @@ const router     = express.Router()
         let userEmail    = req.body.email;
         let userLocation = req.body.location;
         let checkInTime  = req.body.checkIn;
-       
+        
         // check valid user input
         if (!fullName || !userEmail || !checkInTime || !userLocation ) {
-            res.status(400).send({'response': 'Input missing'});
+            res.status(400).send({'response': 'Input missing '});
         }
        
         Attendee.findOne({ userEmail }, function (err, attendee) {
 
             if (err) {
-                res.status(500).send({'response': ' Save Error '})
+                res.status(500).send({'response': 'Save Error '})
             }
 
             if (attendee) {
@@ -34,7 +34,7 @@ const router     = express.Router()
                 });
 
                 newAttendee.save( () => {
-                    res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime}` })
+                    res.status(201).send({"response": `Welcome ${fullName}, Check In time is ${checkInTime} ` })
                 });
 
             }
@@ -43,7 +43,7 @@ const router     = express.Router()
 
    });
 
-   router.post('/check-out', (req, res) => {
+    router.post('/check-out', (req, res) => {
 
         // get user details
         let fullName     = req.body.fullName;
@@ -52,23 +52,27 @@ const router     = express.Router()
         let checkOutTime = req.body.checkOut;
        
         // check valid user input
-        if (!fullName || !userEmail || !checkOutTime || !userLocation  ) {
+        if ( !fullName || !userEmail || !checkOutTime || !userLocation  ) {
             res.status(400).send({'response': 'Input missing'});
         }
 
         //  check for existing user, remove account and return response
         Attendee.findOneAndDelete({ fullName, userEmail }, function(err, attendee ) {
 
-            if (err) {
+            if ( err ) {
                 res.status(500).send({'response': ' Delete Error'});
             }
+
+            if (attendee.checkInTime.toJSON() > req.body.checkOut) {
+                res.status(400).send({'response': 'Check Out time is not valid'});
+            }
            
-            if (!attendee) {
+            if ( !attendee ) {
                 res.status(400).send({'response': 'No attendee with that email exists'});
             }
 
             else {
-                res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime}`});
+                res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
             }
            
        });
