@@ -4,7 +4,10 @@
     const logger     = require('morgan')
     const dotenv     = require('dotenv').config()
     const passport   = require('passport')
-       LocalStrategy = require('passport-local').Strategy;
+    const LocalStrategy = require('passport-local').Strategy;
+
+    const JSONWebToken = require('jsonwebtoken')
+    const   crypto     = require('crypto')
 
     const users      = require('./users.json')
     const db         = require('./db') 
@@ -37,13 +40,44 @@
     passport.use('local', localStrategy)
 
 
+    const generateToken = function (req, res) {
+        console.log('generateToken>>>>>', user)
+        const payload = {
+            id : user.id,
+            username: user.username
+        };
+
+        const secret = crypto.randomBytes( 128 ).toString( 'base64' );
+        
+        const token  = JSONWebToken.sign( payload, secret );
+        
+        // req.user.secret = secret;
+
+        return token;
+
+    }
+
+    const generateTokenHandler = function ( request, response ) {
+         console.log('-----------', request.user)
+         let user = request.user;
+ 
+        // generate token
+        let token = generateToken( user );
+
+        // return the user a token to use
+        response.send ( token );
+    }
+
+
     app.post(
         '/login',
         passport.authenticate( 'local', { session: false }),
-        function (request, response) {
-            response.send( 'User Id: ' + request.user.id )
+        generateTokenHandler
+    );
 
-        })
+
+
+
 
     // config & routes
     app.use('/v1', routes.attendee);
