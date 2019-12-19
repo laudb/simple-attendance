@@ -41,25 +41,25 @@
 
 
     const generateToken = function (req, res) {
-        console.log('generateToken>>>>>', user)
-        const payload = {
+
+        let payload = {
             id : user.id,
             username: user.username
         };
 
-        const secret = crypto.randomBytes( 128 ).toString( 'base64' );
+        let secret = crypto.randomBytes( 128 ).toString( 'base64' );
         
-        const token  = JSONWebToken.sign( payload, secret );
+        let token  = JSONWebToken.sign( payload, secret );
         
-        // req.user.secret = secret;
+        // req.user.secret = secret; 
 
         return token;
 
     }
 
     const generateTokenHandler = function ( request, response ) {
-         console.log('-----------', request.user)
-         let user = request.user;
+
+        let user = request.user;
  
         // generate token
         let token = generateToken( user );
@@ -68,12 +68,46 @@
         response.send ( token );
     }
 
+    const verifyToken = function ( token, done ) {
+        let payload = JSONWebToken.decode( token );
+        let user    = users[ payload.username ];
+        
+        if ( user == null || user.id !== payload.id || user.username !== payload.username ) {
+               return done( null, false );
+        }
+
+        JSONWebToken.verify( token, user.secret, function (err, decoded ) {
+            if ( error || decoded == null ) {
+                return done( error, false )
+            }
+            return done( null, user )
+        });
+    }
+
+    const bearerStrategy = new BearerStrategy (
+        verifyToken
+    )
+
+    passport.use( 'bearer', bearerStrategy )
+
 
     app.post(
         '/login',
         passport.authenticate( 'local', { session: false }),
         generateTokenHandler
     );
+
+    app.get(
+        '/userinfo',
+        passport.authenticate( 'bearer', { session: false }),
+        function ( request, response ) {
+            let user = request.user;
+            response.send({ 
+                id: user.id,
+                username: user.username
+            })
+        }
+    )
 
 
 
