@@ -3,9 +3,6 @@ const User                              = require('../models/user')
 const express                           = require('express')
 const router                            = express.Router()
 
-router.post('/', function (req, res) {
-    let email    = req.body.email;
-    let passCode = req.body.passCode;
-
-    // continue auth flow
+router.get('/', function (req, res) {
+    res.status( 200 ).send({ 'response': 'Welcome Logged In User' })
 })
