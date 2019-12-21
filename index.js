@@ -1,17 +1,18 @@
-    const express    = require('express')
-    const app        = express()
-    const bodyParser = require('body-parser')
-    const logger     = require('morgan')
-    const dotenv     = require('dotenv').config()
-    const passport   = require('passport')
-    const LocalStrategy = require('passport-local').Strategy;
+    const express        = require('express');
+    const app            = express();
+    const bodyParser     = require('body-parser');
+    const logger         = require('morgan');
+    const dotenv         = require('dotenv').config();
+    const passport       = require('passport');
+    const LocalStrategy  = require('passport-local').Strategy;
+    const BearerStrategy = require('passport-http-bearer');
 
-    const JSONWebToken = require('jsonwebtoken')
-    const   crypto     = require('crypto')
+    const JSONWebToken   = require('jsonwebtoken');
+    const   crypto       = require('crypto');
 
-    const users      = require('./users.json')
-    const db         = require('./db') 
-    const routes     = require('./routes')
+    const users          = require('./users.json');
+    const db             = require('./db') ;
+    const routes         = require('./routes');
     
     // deps. setup
     app.use(logger('dev'));
@@ -107,11 +108,7 @@
                 username: user.username
             })
         }
-    )
-
-
-
-
+    );
 
     // config & routes
     app.use('/v1', routes.attendee);
