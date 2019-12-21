@@ -1,5 +1,5 @@
-const attendee = require('./attendee')
-const user = require('./user')
+const attendee = require('./attendee');
+const user     = require('./user');
 
 module.exports = {
     attendee: attendee
