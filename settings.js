@@ -1,21 +1,18 @@
-// set time bounds & be able to compare
-// duration in hours
-function Time ( timeStart ) {
-    this.timeStart = timeStart;
-    this.finalTime; 
+// set time bounds 
+function Time ( dateTimeStart, dateTimeEnd ) {
+    this.dateTimeStart = dateTimeStart;
+    this.dateTimeEnd = dateTimeEnd; 
 };
 
+// determine duration
+Time.prototype.getDuration = function () {
+    // check & ensure datetime format
+    let timeStart = this.dateTimeStart.toISOString();
+    let timeEnd   = this.dateTimeStart.toISOString();
 
-Time.prototype.setFinalTime = function ( duration ) {
-
-    // compute final time.
-
-};
-
-Time.prototype.compareTime = function ( time ) {
-
-    // compare given time to see if lies within bounds.
-
+    // compute difference
+    return timeEnd - timeStart
+    
 };
 
 module.exports = Time;
