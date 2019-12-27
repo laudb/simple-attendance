@@ -25,27 +25,27 @@
     passport.use( 'bearer', bearerStrategy )
 
     
-    app.post(
-        '/login',
-        passport.authenticate( 'local', { session: false }),
-        generateTokenHandler
-    );
+    // app.post(
+    //     '/login',
+    //     passport.authenticate( 'local', { session: false }),
+    //     generateTokenHandler
+    // );
     
-    app.get(
-        '/userinfo',
-        passport.authenticate( 'bearer', { session: false }),
-        function ( request, response ) {
-            let user = request.user;
-            response.send({ 
-                id: user.id,
-                username: user.username
-            })
-        }
-    );
+    // app.get(
+    //     '/userinfo',
+    //     passport.authenticate( 'bearer', { session: false }),
+    //     function ( request, response ) {
+    //         let user = request.user;
+    //         response.send({ 
+    //             id: user.id,
+    //             username: user.username
+    //         })
+    //     }
+    // );
 
 
     // config & routes
-    app.use('/v1', routes.attendee);
+    app.use('/v1', routes );
 
     app.use(function(req, res, next) {
         return res.status(404).send({'response': 'Route Not Found.' })
