@@ -9,11 +9,11 @@ const users           = require('./users.json');
 const generateToken = function (req, res) {
 
     let payload = {
-        id : user.id,
-        username: user.username
+        id : user._id,
+        username: user.fullName
     };
 
-    let secret = crypto.randomBytes( 128 ).toString( 'base64' );
+    let secret = process.env.JSONWebToken;
     
     let token  = JSONWebToken.sign( payload, secret );
     

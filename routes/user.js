@@ -70,7 +70,19 @@ router.post('/signin', function (req, res) {
                         return res.status( 401 ).send({ 'response': 'Auth3 Error .' });
                     }
                     if (result) {
-                        return res.status( 200 ).send({ 'response': 'Auth Successful .' });
+                        const token = jwt.sign( 
+                            {
+                                fullName: user[0].fullName
+                            },
+                            process.env.JWT_KEY, 
+                            {
+                                expiresIn: "1h"
+                            }
+                        );
+                        return res.status( 200 ).send({ 
+                            'response': 'Auth Successful .',
+                            'token': token 
+                        });
                     }
                     res.status( 400 ).send({ 'response': 'Auth4 Error .' })
             })
