@@ -1,5 +1,5 @@
 
-const LocalStrategy   = require('passport-local').Strategy;
+// const LocalStrategy   = require('passport-local').Strategy;
 const BearerStrategy  = require('passport-http-bearer');
 const JSONWebToken    = require('jsonwebtoken');
 const crypto          = require('crypto');
@@ -51,32 +51,32 @@ const generateTokenHandler = function ( request, response ) {
     response.send ( token );
 }
 
-const localStrategy = new LocalStrategy({
-        usernameField : 'userEmail',
-        passwordField : 'userPassCode'
-    },
-    function ( userEmail, userPassCode, done ) {
-        // should use persisted users
-        user = users[ userEmail ];
+// const localStrategy = new LocalStrategy({
+//         usernameField : 'userEmail',
+//         passwordField : 'userPassCode'
+//     },
+//     function ( userEmail, userPassCode, done ) {
+//         // should use persisted users
+//         user = users[ userEmail ];
 
-        if ( user == null ) {
-            return done( null, false, { message: 'Invalid User' });
-        }
+//         if ( user == null ) {
+//             return done( null, false, { message: 'Invalid User' });
+//         }
 
-        if ( user.password !== userPassCode ) {
-            return done( null, false, { message: 'Invalid Password' });
-        }
+//         if ( user.password !== userPassCode ) {
+//             return done( null, false, { message: 'Invalid Password' });
+//         }
 
-        done ( null, user );
-});
+//         done ( null, user );
+// });
 
 const bearerStrategy = new BearerStrategy (
     verifyToken
 )
 
 
+// localStrategy,
 module.exports = {
-    localStrategy,
     bearerStrategy,
     generateTokenHandler
 }

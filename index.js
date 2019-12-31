@@ -7,7 +7,8 @@
     const passport                  = require('passport');
     const db                        = require('./db') ;
     const routes                    = require('./routes');
-    const { localStrategy,
+    // localStrategy,
+    const { 
             bearerStrategy, 
             generateTokenHandler }  = require('./middleware/auth')
     // deps. setup
@@ -19,7 +20,7 @@
 
     app.use(passport.initialize());
 
-    passport.use('local', localStrategy)
+    // passport.use('local', localStrategy)
 
     passport.use( 'bearer', bearerStrategy )
 
