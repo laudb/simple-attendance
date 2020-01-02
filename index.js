@@ -25,12 +25,6 @@
     passport.use( 'bearer', bearerStrategy )
 
     
-    // app.post(
-    //     '/login',
-    //     passport.authenticate( 'local', { session: false }),
-    //     generateTokenHandler
-    // );
-    
     // app.get(
     //     '/userinfo',
     //     passport.authenticate( 'bearer', { session: false }),

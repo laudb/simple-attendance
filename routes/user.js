@@ -3,9 +3,11 @@ const User                              = require('../models/user')
 const express                           = require('express')
 const router                            = express.Router()
 const bcrypt                            = require('bcrypt')
+const jwt                               = require('jsonwebtoken')
+const passport                          = require('passport');
 
 
-router.get('/', function (req, res) {
+router.get('/', passport.authenticate('bearer'), function (req, res) {
     res.status( 200 ).send({ 'response': 'Welcome Logged In User' });
 });
 
@@ -64,15 +66,20 @@ router.post('/signin', function (req, res) {
         }
 
         else {
-            
+            console.log('password',req.body.password)
+            console.log('passCode',user[0].userPassCode)
+
             bcrypt.compare( req.body.password, user[0].userPassCode, function (error, result) {
                     if (error) {
                         return res.status( 401 ).send({ 'response': 'Auth3 Error .' });
                     }
+                    console.log('result ', result)
                     if (result) {
+
                         const token = jwt.sign( 
                             {
-                                fullName: user[0].fullName
+                                fullName: user[0].fullName,
+                                userEmail: user[0].userEmail
                             },
                             process.env.JWT_KEY, 
                             {

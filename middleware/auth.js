@@ -3,80 +3,68 @@
 const BearerStrategy  = require('passport-http-bearer');
 const JSONWebToken    = require('jsonwebtoken');
 const crypto          = require('crypto');
-const users           = require('./users.json');
+// const users           = require('./users.json');
+const User            = require('../models/user');
+const secret          = process.env.JWT_KEY;
 
 
-const generateToken = function (req, res) {
+// const generateToken = function (req, res) {
 
-    let payload = {
-        id : user._id,
-        username: user.fullName
-    };
-
-    let secret = process.env.JSONWebToken;
+//     let payload = {
+//         id : user._id,
+//         username: user.fullName,
+//         email: user.userEmail
+//     };
     
-    let token  = JSONWebToken.sign( payload, secret );
+//     let token  = JSONWebToken.sign( payload, secret );
     
-    // req.user.secret = secret; 
+//     // req.user.secret = secret; 
 
-    return token;
+//     return token;
 
-}
+// }
+
+// const generateTokenHandler = function ( request, response ) {
+
+//     let user = request.user;
+
+//     // generate token
+//     let token = generateToken( user );
+
+//     // return the user a token to use
+//     response.send ( token );
+// }
+
+
 
 const verifyToken = function ( token, done ) {
-    let payload = JSONWebToken.decode( token );
-    let user    = users[ payload.username ];
-    
-    if ( user == null || user.id !== payload.id || user.username !== payload.username ) {
-           return done( null, false );
-    }
 
-    JSONWebToken.verify( token, user.secret, function (err, decoded ) {
-        if ( error || decoded == null ) {
-            return done( error, false )
+    let payload = JSONWebToken.decode( token );
+    console.log('payload', payload)
+    User.findOne( { userEmail: payload.userEmail }, (err, result) => {
+        if (err) {
+            console.log('err', err);
         }
-        return done( null, user )
+
+        // if ( result == null || result.id !== payload.id || result.fullName !== payload.fullName ) {       
+        if ( result == null ) {
+            return done( null, false );
+        } 
+        
+        JSONWebToken.verify( token, secret, function (error, decoded ) {
+            if ( error || decoded == null ) {
+                return done( error, false )
+            }
+            return done( null, result )
+        }) ;
     });
 }
 
-
-const generateTokenHandler = function ( request, response ) {
-
-    let user = request.user;
-
-    // generate token
-    let token = generateToken( user );
-
-    // return the user a token to use
-    response.send ( token );
-}
-
-// const localStrategy = new LocalStrategy({
-//         usernameField : 'userEmail',
-//         passwordField : 'userPassCode'
-//     },
-//     function ( userEmail, userPassCode, done ) {
-//         // should use persisted users
-//         user = users[ userEmail ];
-
-//         if ( user == null ) {
-//             return done( null, false, { message: 'Invalid User' });
-//         }
-
-//         if ( user.password !== userPassCode ) {
-//             return done( null, false, { message: 'Invalid Password' });
-//         }
-
-//         done ( null, user );
-// });
-
-const bearerStrategy = new BearerStrategy (
-    verifyToken
-)
+const bearerStrategy = new BearerStrategy ( verifyToken )
 
 
 // localStrategy,
 module.exports = {
-    bearerStrategy,
-    generateTokenHandler
+    verifyToken,
+    bearerStrategy
 }
