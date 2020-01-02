@@ -17,27 +17,6 @@
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-
-    app.use(passport.initialize());
-
-    // passport.use('local', localStrategy)
-
-    passport.use( 'bearer', bearerStrategy )
-
-    
-    // app.get(
-    //     '/userinfo',
-    //     passport.authenticate( 'bearer', { session: false }),
-    //     function ( request, response ) {
-    //         let user = request.user;
-    //         response.send({ 
-    //             id: user.id,
-    //             username: user.username
-    //         })
-    //     }
-    // );
-
-
     // config & routes
     app.use('/v1', routes );
 

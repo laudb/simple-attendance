@@ -1,70 +1,34 @@
 
 // const LocalStrategy   = require('passport-local').Strategy;
 const BearerStrategy  = require('passport-http-bearer');
-const JSONWebToken    = require('jsonwebtoken');
+const jwt             = require('jsonwebtoken');
 const crypto          = require('crypto');
-// const users           = require('./users.json');
 const User            = require('../models/user');
 const secret          = process.env.JWT_KEY;
 
 
-// const generateToken = function (req, res) {
+function verifyToken(req, res, next) {
 
-//     let payload = {
-//         id : user._id,
-//         username: user.fullName,
-//         email: user.userEmail
-//     };
-    
-//     let token  = JSONWebToken.sign( payload, secret );
-    
-//     // req.user.secret = secret; 
+    let token = req.headers['x-access-token'].split(' ')[1];
 
-//     return token;
+    if (!token) {
+        return res.status(403).send({'response': 'No Token Provided.'})
+    }
 
-// }
+    jwt.verify( token, process.env.JWT_KEY, function(err, decoded) {
 
-// const generateTokenHandler = function ( request, response ) {
-
-//     let user = request.user;
-
-//     // generate token
-//     let token = generateToken( user );
-
-//     // return the user a token to use
-//     response.send ( token );
-// }
-
-
-
-const verifyToken = function ( token, done ) {
-
-    let payload = JSONWebToken.decode( token );
-    console.log('payload', payload)
-    User.findOne( { userEmail: payload.userEmail }, (err, result) => {
-        if (err) {
-            console.log('err', err);
+        if (err){
+            return res.status(500).send({'response':'Failed to authenticate Token.'})
         }
-        console.log('result', result)
 
-        if ( result == null || result.fullName !== payload.fullName ) {
-            return done( null, false );
-        } 
-        
-        JSONWebToken.verify( token, secret, function (error, decoded ) {
-            if ( error || decoded == null ) {
-                return done( error, false )
-            }
-            return done( null, result )
-        }) ;
-    });
+        console.log({'decoded': decoded})
+
+        next();
+    })
+ 
 }
 
-const bearerStrategy = new BearerStrategy ( verifyToken )
 
-
-// localStrategy,
 module.exports = {
-    verifyToken,
-    bearerStrategy
+    verifyToken
 }
