@@ -45,9 +45,9 @@ const verifyToken = function ( token, done ) {
         if (err) {
             console.log('err', err);
         }
+        console.log('result', result)
 
-        // if ( result == null || result.id !== payload.id || result.fullName !== payload.fullName ) {       
-        if ( result == null ) {
+        if ( result == null || result.fullName !== payload.fullName ) {
             return done( null, false );
         } 
         
