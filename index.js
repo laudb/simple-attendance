@@ -4,14 +4,9 @@
     const logger                    = require('morgan');
     const dotenv                    = require('dotenv').config();
 
-    const passport                  = require('passport');
     const db                        = require('./db') ;
     const routes                    = require('./routes');
-    // localStrategy,
-    const { 
-            bearerStrategy, 
-            generateTokenHandler }  = require('./middleware/auth')
-    // deps. setup
+        
 
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
