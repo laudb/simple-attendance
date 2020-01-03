@@ -6,7 +6,8 @@ const bcrypt                            = require('bcrypt');
 const jwt                               = require('jsonwebtoken');
 const { verifyToken }                   = require('../middleware/auth');
 
-router.get('/', verifyToken, function (req, res) { res.status( 200 ).send({ 'response': 'Welcome Logged In User' }); });
+// non-verified routes
+router.get('/', function (req, res) { res.status( 200 ).send({ 'response': 'Welcome Logged In User' }); });
 
 router.post('/signup', function (req, res ) {
 
@@ -64,6 +65,10 @@ router.post('/login', (req, res) => {
 
 });
 
+// verified routes
+router.get('/user/:id', verifyToken, unction (req, res) { 
+    res.status( 200 ).send({ 'response': `Welcome user: ${req.params.id}`}); 
+});
 
 router.delete('/:userId', verifyToken, (req, res) => {
 

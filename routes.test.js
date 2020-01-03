@@ -37,7 +37,7 @@ describe('Endpoints', () => {
 
     it('should get the main url', async () => {
         const res = await request(server)
-        .get('/v1/')
+        .get('/v1/user/')
         expect(res.statusCode).toEqual(200)
         expect(res.body).toHaveProperty('response')
     });

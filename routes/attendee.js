@@ -1,5 +1,5 @@
 const { attendeeValidationRules, validate } = require('../validator')
-const Attendee                              = require('../models/attendee')
+const { Attendee }                          = require('../models/attendee')
 const express                               = require('express')
 const router                                = express.Router()
 const { verifyToken }                       = require('../middleware/auth');

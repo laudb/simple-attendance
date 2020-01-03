@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const attendeeSchema = mongoose.Schema({
     fullName: {type: String, required: true },
     userEmail: {type: String, unique: true, required: true },
@@ -10,5 +9,6 @@ const attendeeSchema = mongoose.Schema({
 
 const Attendee = mongoose.model("Attendee", attendeeSchema )
 
-module.exports = Attendee;
+
+module.exports = { attendeeSchema, Attendee };
 
