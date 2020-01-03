@@ -9,6 +9,7 @@ const { verifyToken }                   = require('../middleware/auth');
 // non-verified routes
 router.get('/', function (req, res) { res.status( 200 ).send({ 'response': 'Welcome Logged In User' }); });
 
+
 router.post('/signup', function (req, res ) {
 
     User.find({ userEmail: req.body.email }, function (err, user) {
@@ -25,15 +26,17 @@ router.post('/signup', function (req, res ) {
                         fullName: req.body.fullName,
                         userEmail: req.body.email,
                         userPassCode: hash,
+                        attendees:[],
                         isManager: true
                     });
     
                     user.save( (err, result) => {
                         if ( err ) {
-                            return res.status( 400 ).send({'response': 'Error Saving User'})
+                            return res.status( 400 ).send({'response': `Error Saving User: ${err}`})
                         }
                         return res.status( 201 ).send({'response': 'User has been created'})
                     });
+                    
                 }
             });
 
@@ -66,8 +69,14 @@ router.post('/login', (req, res) => {
 });
 
 // verified routes
-router.get('/user/:id', verifyToken, unction (req, res) { 
-    res.status( 200 ).send({ 'response': `Welcome user: ${req.params.id}`}); 
+router.get('/:id', verifyToken, (req, res) => { 
+    res.status( 200 ).send({ 'response': `Welcome user: ${req.params.id}` }); 
+});
+
+router.get('/:id/attendees', verifyToken, async (req, res)=> {
+    const { id } = req.params;
+    const user = await User.findById(id).populate('attendees');
+    res.status(200).send({'response': user.attendees });
 });
 
 router.delete('/:userId', verifyToken, (req, res) => {
