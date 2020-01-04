@@ -5,7 +5,7 @@ const attendeeSchema = mongoose.Schema({
     userEmail: {type: String, unique: true, required: true },
     userLocation: {type: String, required: true },
     checkInTime: { type: Date },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 const Attendee = mongoose.model("Attendee", attendeeSchema )
