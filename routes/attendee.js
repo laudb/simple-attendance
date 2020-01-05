@@ -51,18 +51,23 @@ const router     = express.Router()
 
         let userId = req.params.id;
         let userLocation = userLat + ', ' + userLong;
-    
-        Attendee.findOne({ userEmail, userId }, async function ( err, attendee ) {
+
+        User.findOne({ userId }, async function (err, user) {
             
-            let user = await  User.findById( userId );
-            if ( err ) { return res.status( 400 ).send({'response': `User error. ${err}`}) };
+            if (err) { return res.status(400).send({'response': `${err}`})}
+
+            let attendee = await Attendee.findOne({ userEmail, userId })
+            
             console.log({'user': user, 'attendee': attendee})
-            if (attendee.checkInTime.toJSON() > req.body.checkOut) {
-                res.status(400).send({'response': 'Check Out time is not valid'});
-            }
+
             if (!attendee) {
                 return res.status(400).send({'response': 'No attendee with that email exists'});
             }
+
+            if (attendee.checkInTime.toJSON() > req.body.checkOut) {
+                res.status(400).send({'response': 'Check Out time is not valid'});
+            }
+            
             if ( attendee ) {
                 user.attendees.remove(attendee)
                 user.save( function (err) {
@@ -71,7 +76,29 @@ const router     = express.Router()
                 });
 
             };
+
         });
+    
+        // Attendee.findOne({ userEmail, userId }, async function ( err, attendee ) {
+            
+        //     let user = await  User.findById( userId );
+        //     if ( err ) { return res.status( 400 ).send({'response': `User error. ${err}`}) };
+        //     console.log({'user': user, 'attendee': attendee})
+        //     if (attendee.checkInTime.toJSON() > req.body.checkOut) {
+        //         res.status(400).send({'response': 'Check Out time is not valid'});
+        //     }
+        //     if (!attendee) {
+        //         return res.status(400).send({'response': 'No attendee with that email exists'});
+        //     }
+        //     if ( attendee ) {
+        //         user.attendees.remove(attendee)
+        //         user.save( function (err) {
+        //             if (err) return res.status(400).send({ 'response': err });
+        //             return res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
+        //         });
+
+        //     };
+        // });
 
         // let attendee = await user.children.userEmail(userEmail);
          
