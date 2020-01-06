@@ -1,5 +1,5 @@
 const { attendeeValidationRules, validate } = require('../validator')
-const User   = require('../models/user')
+const User       = require('../models/user')
 const Attendee   = require('../models/attendee')
 const express    = require('express')
 const router     = express.Router()
@@ -23,14 +23,24 @@ const router     = express.Router()
         let userId = req.params.id;
         let userLocation = userLat + ', ' + userLong;
         
-        User.findOne({_id: userId }, function (err, user) {
-            let attendee = new Attendee({ fullName, userEmail, userLocation, checkInTime, userId })
-            if (err) { return res.status(400).send({'response': `User error. ${err}`}) };
-            if (user) {
-                user.attendees.push(attendee);
-                user.save();
-                res.json({ 'response': `Welcome ${fullName}, Check In time is ${checkInTime}` });
-            }
+        User.findOne({_id: userId }, function (userErr, user) {
+
+            if (userErr) { return res.status(400).send({'response': `User error. ${userErr}`}) };
+            if (!user) { return res.status(400).send({'response': 'User does not exist'}) }; 
+
+            Attendee.findOne({ userEmail }, function (attendeeErr, attendeeExists) {
+
+                if (attendeeErr) { return res.status(400).send({'response': `User error. ${attendeeErr}`}) };
+                if (attendeeExists) { return res.status(400).send({'response': `Attendee already exists.`}) }
+
+                else {
+
+                    let attendee = new Attendee({ fullName, userEmail, userLocation, checkInTime, userId })
+                    attendee.save();
+                    return res.status(200).send({ 'response': `Welcome ${fullName}, Check In time is ${checkInTime}` });
+
+                }
+            } );
         } );
 
    });
@@ -52,81 +62,34 @@ const router     = express.Router()
         let userId = req.params.id;
         let userLocation = userLat + ', ' + userLong;
 
-        User.findOne({ userId }, async function (err, user) {
-            
-            if (err) { return res.status(400).send({'response': `${err}`})}
+            User.findOne({_id: userId }, function (userErr, user) {
 
-            let attendee = await Attendee.findOne({ userEmail, userId })
-            
-            console.log({'user': user, 'attendee': attendee})
+                if (userErr) { return res.status(400).send({'response': `User error. ${userErr}`}) };
+                if (!user) { return res.status(400).send({'response': 'User does not exist'}) }; 
 
-            if (!attendee) {
-                return res.status(400).send({'response': 'No attendee with that email exists'});
-            }
+                Attendee.findOne({ userEmail, userId }, function (attendeeErr, attendee) {
+                    if (attendeeErr) { return res.status(404).send({'response': `${attendeeErr}`}) }
 
-            if (attendee.checkInTime.toJSON() > req.body.checkOut) {
-                res.status(400).send({'response': 'Check Out time is not valid'});
-            }
-            
-            if ( attendee ) {
-                user.attendees.remove(attendee)
-                user.save( function (err) {
-                    if (err) return res.status(400).send({ 'response': err });
-                    return res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
+                    if ( !attendee ) {
+
+                        return res.status(400).send({'response': 'No attendee with that email exists'});           
+
+                    } else {
+
+                        if (attendee.checkInTime.toJSON() > req.body.checkOut) {
+                            return res.status(400).send({'response': 'Check Out time is not valid'});
+                        } 
+
+                        attendee.remove()
+                        attendee.save()
+                        return res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
+                    }
+                    
                 });
 
-            };
+            });    
 
         });
-    
-        // Attendee.findOne({ userEmail, userId }, async function ( err, attendee ) {
-            
-        //     let user = await  User.findById( userId );
-        //     if ( err ) { return res.status( 400 ).send({'response': `User error. ${err}`}) };
-        //     console.log({'user': user, 'attendee': attendee})
-        //     if (attendee.checkInTime.toJSON() > req.body.checkOut) {
-        //         res.status(400).send({'response': 'Check Out time is not valid'});
-        //     }
-        //     if (!attendee) {
-        //         return res.status(400).send({'response': 'No attendee with that email exists'});
-        //     }
-        //     if ( attendee ) {
-        //         user.attendees.remove(attendee)
-        //         user.save( function (err) {
-        //             if (err) return res.status(400).send({ 'response': err });
-        //             return res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
-        //         });
-
-        //     };
-        // });
-
-        // let attendee = await user.children.userEmail(userEmail);
-         
-
-
-
-        //  check for existing user, remove account and return response
-    //     Attendee.findOneAndDelete({ fullName, userEmail }, function(err, attendee ) {
-
-    //         if ( err ) {
-    //             res.status(500).send({'response': ' Delete Error'});
-    //         }
-
-    //         if (attendee.checkInTime.toJSON() > req.body.checkOut) {
-    //             res.status(400).send({'response': 'Check Out time is not valid'});
-    //         }
-           
-    //         if ( !attendee ) {
-    //             res.status(400).send({'response': 'No attendee with that email exists'});
-    //         }
-
-    //         else {
-    //             res.status(200).send({'response': `Thank you ${fullName}, Check Out time is ${checkOutTime} `});
-    //         }
-           
-    //    });
-
-    });
 
 
 module.exports = router

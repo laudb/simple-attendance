@@ -1,5 +1,6 @@
 const { userValidationRules, validate } = require('../validator');
 const User                              = require('../models/user');
+const Attendee                          = require('../models/attendee');
 const express                           = require('express');
 const router                            = express.Router();
 const bcrypt                            = require('bcrypt');
@@ -74,9 +75,9 @@ router.get('/:id', verifyToken, (req, res) => {
 });
 
 router.get('/:id/attendees', verifyToken, async (req, res)=> {
-    const { id } = req.params;
-    const user = await User.findById(id).populate('attendees');
-    res.status(200).send({'response': user.attendees });
+    const userId = req.params.id;
+    const attendees = await Attendee.find({userId})
+    res.status(200).send({'response': attendees });
 });
 
 router.delete('/:userId', verifyToken, (req, res) => {
