@@ -5,13 +5,13 @@ let   server
 
 beforeAll(async (done) => {
 
-    await mongoose.connect(process.env.TESTMONGOURL, { 
+    await mongoose.connect(process.env.MONGOURL, { 
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
         useCreateIndex: true 
     });
     
-    server = app.listen(process.env.TESTPORT, () => {
+    server = app.listen(process.env.TEST_PORT, () => {
         global.agent = request.agent(server)
         done();
     });
