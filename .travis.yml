@@ -19,3 +19,6 @@ deploy:
   app: simpleattendance-api
   on: 
     repo: laudb/simple-attendance
+
+services:
+  - mongodb
