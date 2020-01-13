@@ -3,11 +3,12 @@
     const bodyParser                = require('body-parser');
     const logger                    = require('morgan');
     const dotenv                    = require('dotenv').config();
-
+    const helmet                    = require('helmet');
     const db                        = require('./db') ;
     const routes                    = require('./routes');
         
-
+    
+    app.use(helmet());
     app.use(logger('dev'));
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
