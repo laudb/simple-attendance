@@ -13,7 +13,7 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: $HEROKU_API_KEY
+    secure: rTPPhuJ9As0Iy5UakhZFk0vX32afC+5lnJOAYcq1aSP0hMMGeI6gQLfMKhe9jKJc1F+ktmoQcz3VL4bHkEe7PhekgXd1CKyYTwzHgRfgZtKJ2PRvJ64LYOXBDF+jdlrOYaIWYeHyAbXYVSV9mn65tVWd1ADHktRxk7mp9oeLzeJ6SFqmP6z8+AkAjrOqv4jj6FqIZMx5vi+ISyCW/GZtKajaVyyEt0ZEtZWs2gOdwnUae3qDjx5Tbcb92s2DCQ5Rnc+eA6ZPn61qDwgARc+qZr6VOybJZSRd558c/Z6Vsu+cFQfxa+I2aVAtFkkVlCwdZ1nhXuT5vLHSlgJ+upYuoA1NQmCEiigZtSOy3QAJEzEwgFzzUs8OdMvPiVoqR6lGpucwWjlHwshUUOlk6SOmYnK7PIp0pu75eotx3WzmpGyiM6G8+qqtQvUUa58pXwXHrTqa+my1wBtfJrwtyNAVXVQxmGBYvWsYo/HYf/a+0eFCOtjpaApW3hBoqhVf7qNjId2hhWrvqAZ3wgZsXaQDHLauxjpualKFADuKjfcrdwfD/UDS7BprfYTLCC9KaaRfJ/V2KOoCBgn99RD4XGOv/mfcVj60PR2+1W4X6KyGZds7k0lEA3FAhur+Gxi4Fp8H8luryAecrtYEK9l9dHa/vwUvaW4MjGN7NYRaX5IB9x8=
   app: simpleattendance-api
   on:
     repo: laudb/simple-attendance
