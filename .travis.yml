@@ -11,7 +11,6 @@ script:
   - snyk --version
   - snyk auth $SNYK_TOKEN
   - npm install
-  - npm test
   - snyk test
 
 deploy:
@@ -21,9 +20,6 @@ deploy:
   app: simpleattendance-api
   on: 
     repo: laudb/simple-attendance
-
-services:
-  - mongodb
 
 after_success:
   - snyk monitor
