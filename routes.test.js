@@ -1,5 +1,6 @@
 const request  = require('supertest')
 const mongoose = require('mongoose')
+const http     = require('http')
 const app      = require('./index')
 let   server
 
@@ -11,7 +12,8 @@ beforeAll(async (done) => {
         useCreateIndex: true 
     });
     
-    server = app.listen(process.env.TEST_PORT, () => {
+    server = http.createServer( app );
+    server.listen(process.env.TEST_PORT, () => {
         global.agent = request.agent(server)
         done();
     });

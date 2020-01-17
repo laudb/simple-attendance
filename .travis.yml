@@ -6,6 +6,12 @@ branches:
   only:
   - master
 
+script:
+  - npm install -g snyk
+  - snyk --version
+  - snyk auth $SNYK_TOKEN
+  - snyk monitor --project-name=simpleattendance-api
+
 deploy:
   provider: heroku
   api_key: 
@@ -16,3 +22,6 @@ deploy:
 
 services:
   - mongodb
+
+after_success:
+  - snyk monitor
