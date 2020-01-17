@@ -4,6 +4,8 @@ const PORT    = process.env.PORT
 
 // app
 let server = http.createServer( app );
+
+
     server.listen( PORT, () => {
         console.log(`Simple Attendance is live at ${PORT}`);
     });

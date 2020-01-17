@@ -1,25 +1,21 @@
 language: node_js
 node_js:
-  - 10.15.2
-
+- 10.15.2
 branches:
   only:
   - master
-
 script:
-  - npm install -g snyk
-  - snyk --version
-  - snyk auth $SNYK_TOKEN
-  - npm install
-  - snyk test
-
+- npm install -g snyk
+- snyk --version
+- snyk auth $SNYK_TOKEN
+- npm install
+- snyk test
 deploy:
   provider: heroku
-  api_key: 
-    secure: "$HEROKU_API_KEY"
+  api_key:
+    secure: $HEROKU_API_KEY
   app: simpleattendance-api
-  on: 
+  on:
     repo: laudb/simple-attendance
-
 after_success:
-  - snyk monitor
+- snyk monitor
