@@ -12,7 +12,7 @@ script:
   - snyk auth $SNYK_TOKEN
   - npm install
   - npm test
-  - snyk monitor --project-name=simpleattendance-api
+  - snyk test
 
 deploy:
   provider: heroku
