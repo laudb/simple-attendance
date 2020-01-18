@@ -8,7 +8,7 @@ const jwt                               = require('jsonwebtoken');
 const { verifyToken }                   = require('../middleware/auth');
 
 // non-verified routes
-router.get('/', function (req, res) { res.status( 200 ).send({ 'response': 'Welcome Logged In User' }); });
+router.get('/', function (req, res) { res.status( 200 ).send({ 'response': 'Simple Attendee v1' }); });
 
 
 router.post('/signup', function (req, res ) {
