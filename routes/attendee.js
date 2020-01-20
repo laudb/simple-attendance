@@ -1,8 +1,10 @@
 const { attendeeValidationRules, validate } = require('../validator')
-const User       = require('../models/user')
-const Attendee   = require('../models/attendee')
-const express    = require('express')
-const router     = express.Router()
+const User                                  = require('../models/user')
+const Attendee                              = require('../models/attendee')
+const express                               = require('express')
+const router                                = express.Router()
+const { verifyToken }                       = require('../middleware/auth');
+
 
    // route
     router.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1 '}) )
