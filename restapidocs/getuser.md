@@ -2,14 +2,14 @@
 Returns json of a single user.
 
 ### Request 
-Request url goes here.
+`{request url}`
 
-### Parameters
+### Details
 
 |Name | Description|
 | ------| ------ |
 |Title| `Get a user`|
-|URL| `{url}`|
+|URL| `{base url}`|
 |Method| `GET`|
 |URL Params| `:id`|
 
@@ -22,4 +22,4 @@ Status :200
 {}
 </code>
 
-
+**w.i.p.*
