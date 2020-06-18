@@ -7,6 +7,7 @@ const bcrypt                            = require('bcrypt');
 const jwt                               = require('jsonwebtoken');
 const { verifyToken }                   = require('../middleware/auth');
 
+// User Sign Up
 router.post('/signup', function (req, res ) {
 
     User.find({ userEmail: req.body.email }, function (err, user) {
@@ -42,7 +43,7 @@ router.post('/signup', function (req, res ) {
 
 });
 
-
+// User Login 
 router.post('/login', (req, res) => {
 
     User.findOne({ userEmail: req.body.email }, function (err, user) {
@@ -65,17 +66,21 @@ router.post('/login', (req, res) => {
 
 });
 
-// verified routes
+
+// Verified Routes
+
 router.get('/:id', verifyToken, (req, res) => { 
     res.status( 200 ).send({ 'response': `Welcome user: ${req.params.id}` }); 
 });
 
+// Get All Attendees of a User with :id
 router.get('/:id/attendees', verifyToken, async (req, res)=> {
     const userId = req.params.id;
     const attendees = await Attendee.find({userId})
     res.status(200).send({'response': attendees });
 });
 
+// Delete A User with :userId
 router.delete('/:userId', verifyToken, (req, res) => {
 
     User.remove({ _id: req.params.userId }, function (err, user) {

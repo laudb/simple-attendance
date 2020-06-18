@@ -5,7 +5,7 @@ const express                               = require('express')
 const router                                = express.Router()
 const { verifyToken }                       = require('../middleware/auth');
 
-
+    // Attendee Check-In
     router.post('/:id/check-in', async (req, res) => {
         // get user details
         let fullName     = req.body.fullName;
@@ -43,7 +43,8 @@ const { verifyToken }                       = require('../middleware/auth');
         } );
 
    });
-
+    
+    // Attendee Check-Out
     router.post('/:id/check-out', (req, res) => {
 
         // get user details
