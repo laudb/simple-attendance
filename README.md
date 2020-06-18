@@ -4,19 +4,20 @@
 ### API Endpoints
 | Base Url |
 | ------ |
-| `[baseUrl]/api/v1` + `resource`|
+| `[baseUrl]/api/v1`|
 
 
 | Description | Verb | Route | 
 | ------ | ------ | ------ |
-| User root | GET | /user/ |
-| Create user account | POST | /user/signup |
-| User login | POST | /user/login |
-| [Get a User with a given id](restapidocs/getuser.md) | GET | /user/:id |
-| Get Attendees belonging to a User | GET | /user/:id/attendees |
+| [Service Status](restapidocs/getServiceStatus.md) | GET | /api-status |
+| Users |  |  |
+| [Create user account](restapidocs/createUserAccount.md) | POST | /user/signup |
+| [User login](restapidocs/loginUser.md) | POST | /user/login |
+| Get a User | GET | /user/:id |
 | Delete a User | DELETE | /user/:userId |
-| Attendee root | GET | /attendee/ |
-| Attendee Check-In | POST | /attendee/:id/check-in |
-| Attendee Check-Out | POST | /attendee/:id/check-out |
+| Attendees |  |  |
+| Get All Attendees of a User | GET | /user/:id/attendees |
+| [Attendee Check-In](restapidocs/attendeeCheckIn.md) | POST | /attendee/:id/check-in |
+| [Attendee Check-Out](restapidocs/attendeeCheckOut.md) | POST | /attendee/:id/check-out |
 
 **tbc**
