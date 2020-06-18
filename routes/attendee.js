@@ -16,7 +16,7 @@ const { verifyToken }                       = require('../middleware/auth');
         
         // check valid user input
         if (!fullName || !userEmail || !userLat || !userLong || !checkInTime ) {
-            res.status(400).send({'response': 'Input missing '});
+            res.status(400).send({'response': 'Input missing'});
         }
 
         let userId = req.params.id;

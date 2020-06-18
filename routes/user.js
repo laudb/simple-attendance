@@ -12,12 +12,12 @@ router.post('/signup', function (req, res ) {
 
     User.find({ userEmail: req.body.email }, function (err, user) {
 
-        if ( err ) { return res.status( 500 ).send({ 'response': 'Error finding User .' }); }
-        if ( user.length >= 1 ) { return res.status( 400 ).send({ 'response': 'User already Exists .' }); } 
+        if ( err ) { return res.status( 500 ).send({ 'response': 'Error finding User .' }); } // review
+        if ( user.length >= 1 ) { return res.status( 400 ).send({ 'response': 'User already Exists.' }); } 
         else {
 
             bcrypt.hash( req.body.password, 12, ( err, hash ) => {
-                if ( err ) { return res.status( 500 ).send({ 'response': 'Pass Code Error .' }); } 
+                if ( err ) { return res.status( 403 ).send({ 'response': 'Pass Code Error .' }); } //  review
                 else {
     
                     const user = new User ({
@@ -30,9 +30,9 @@ router.post('/signup', function (req, res ) {
     
                     user.save( (err, result) => {
                         if ( err ) {
-                            return res.status( 400 ).send({'response': `Error Saving User: ${err}`})
+                            return res.status( 400 ).send({'response': `Error Saving User: ${err}`})  // review
                         }
-                        return res.status( 201 ).send({'response': 'User has been created'})
+                        return res.status( 201 ).send({'response': 'User has been created.'})
                     });
                     
                 }
@@ -51,7 +51,7 @@ router.post('/login', (req, res) => {
         if (!user) return res.status(404).send('No User Found');
           
         bcrypt.compare( req.body.password, user.userPassCode, function (error, result) {
-            if ( error ) { return res.status( 404 ).send({'response': 'Auth Error'}) }
+            if ( error ) { return res.status( 403 ).send({'response': 'Auth Error'}) }
             if ( result ) { 
                 const token = jwt.sign({ id: user._id },
                     process.env.JWT_KEY, { 
