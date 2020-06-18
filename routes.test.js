@@ -37,9 +37,9 @@ describe('Sample Test', () => {
 
 describe('Endpoints', () => {
 
-    it('should get the main url', async () => {
+    it('should get the api status response', async () => {
         const res = await request(server)
-        .get('/v1/user/')
+        .get('/v1/api-status')
         expect(res.statusCode).toEqual(200)
         expect(res.body).toHaveProperty('response')
     });
