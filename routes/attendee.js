@@ -6,9 +6,6 @@ const router                                = express.Router()
 const { verifyToken }                       = require('../middleware/auth');
 
 
-   // route
-    router.get('/', (req, res) => res.status(200).send({'response': 'Simple Attendance v1 '}) )
-
     router.post('/:id/check-in', async (req, res) => {
         // get user details
         let fullName     = req.body.fullName;

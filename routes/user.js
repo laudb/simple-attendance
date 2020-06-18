@@ -7,10 +7,6 @@ const bcrypt                            = require('bcrypt');
 const jwt                               = require('jsonwebtoken');
 const { verifyToken }                   = require('../middleware/auth');
 
-// non-verified routes
-router.get('/', function (req, res) { res.status( 200 ).send({ 'response': 'Simple Attendee v1' }); });
-
-
 router.post('/signup', function (req, res ) {
 
     User.find({ userEmail: req.body.email }, function (err, user) {
