@@ -2,12 +2,12 @@
   A node.js RESTful API where a user can create an account and have attendees check-in or check-out.
 
 ## Url
-`https://simpleattendance-api.herokuapp.com/`
+`https://simpleattendance-api.herokuapp.com`
 
 ### API Endpoints
 | Base Url |
 | ------ |
-| `[baseUrl]/api/v1`|
+| `[Url]/v1`|
 
 
 | Description | Verb | Route | 
