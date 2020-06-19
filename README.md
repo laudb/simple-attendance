@@ -19,5 +19,3 @@
 | Get All Attendees of a User | GET | /user/:id/attendees |
 | [Attendee Check-In](restapidocs/attendeeCheckIn.md) | POST | /attendee/:id/check-in |
 | [Attendee Check-Out](restapidocs/attendeeCheckOut.md) | POST | /attendee/:id/check-out |
-
-**tbc**

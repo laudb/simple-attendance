@@ -6,7 +6,9 @@
   "scripts": {
     "test": "snyk test && NODE_ENV=test jest --testTimeout=3000 --detectOpenHandles",
     "start": "NODE_ENV=production node server.js",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "dev": "NODE_ENV=development nodemon server.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "keywords": [],
   "author": "Laud B <laud.bentil@gmail.com>",
@@ -23,13 +25,13 @@
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "snyk": "^1.346.0"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
     "jest": "^24.9.0",
     "nodemon": "^2.0.2",
-    "snyk": "^1.305.0",
     "supertest": "^4.0.2"
   },
   "jest": {
@@ -37,5 +39,6 @@
     "coveragePathIgnorePatterns": [
       "/nodule_modules"
     ]
-  }
+  },
+  "snyk": true
 }
